@@ -2,11 +2,11 @@ import React from 'react';
 import {StaticRouter, matchPath, Route} from 'react-router-dom';
 // 根据不同的路由，显示对应的网页标题和描述
 import {Helmet} from 'react-helmet';
-import routes from '../routes';
 import {renderToString} from 'react-dom/server';
 import { Provider } from 'mobx-react'
+import { ChunkExtractor } from '@loadable/server'
 import {getServerStore} from '../store';
-import {renderRoutes, matchRoutes} from 'react-router-config';
+import { Page } from '../client/index'
 
 const helmet = Helmet.renderStatic();
 
@@ -37,15 +37,17 @@ export default function (req, res) {
     //         }));
     //     }
     // });
-    // 客户端用 HashRouter 或者 BrowserRouter
-    // 而在服务端用 StaticRouter
-    let html = renderToString(
+    const statsFile = path.resolve('../dist/loadable-stats.json')
+    // We create an extractor from the statsFile
+    const extractor = new ChunkExtractor({ statsFile })
+    // Wrap your application using "collectChunks"
+    const jsx = extractor.collectChunks(
         <Provider store={store}>
-            <StaticRouter context={context} location={req.path}>
-                {renderRoutes(routes)}
-            </StaticRouter>
+            <Page />
         </Provider>
-    );
+    )
+
+    let html = renderToString(jsx)
     // console.log(html)
 
     // 渲染完成之后，再获取 css 样式
@@ -59,6 +61,7 @@ export default function (req, res) {
         // 如果不设置的话，状态码默认是 200
         res.statusCode = 404;
     }
+    console.log(html)
     res.send(`
         <html>
             <head>

@@ -1,38 +1,80 @@
-import React, {lazy} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import routes from '../routes';
-import {BrowserRouter, Router, Route, Switch} from 'react-router-dom';
+import { Router, Route, Switch} from 'react-router-dom';
 import { Provider } from 'mobx-react'
+import loadable, { loadableReady } from '@loadable/component'
+import App from '../containers/App';
 import {getClientStore} from '../store';
 import history from './history'
-// import {renderRoutes, matchRoutes} from 'react-router-config';
 
 // hydrate 就是表示把服务器端渲染未完成的工作完成，比如说绑定事件
-const Counter = lazy(() => import('../containers/Counter'))
-const Login = lazy(() => import('../containers/Login'))
-const Logout = lazy(() => import('../containers/Logout'))
-const Profile = lazy(() => import('../containers/Profile'))
-const Notfound = lazy(() => import('../containers/Notfound'))
-const Home = lazy(() => import('../containers/Home'))
+class LazyLoad extends React.Component {
+    constructor(props) {
+      super(props)
+      let Component = null
+      switch (props.pageName) {
+        case 'Counter':
+          Component = loadable(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Counter'))
+          break
+        case 'Login':
+          Component = loadable(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Login'))
+          break
 
-ReactDOM.render(
-    <Provider store={getClientStore()}>
+        case 'Logout':
+            Component = loadable(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Logout'))
+            break
+
+        case 'Profile':
+            Component = loadable(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Profile'))
+            break
+
+        case 'Notfound':
+            Component = loadable(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Notfound'))
+            break
+
+        case 'Home':
+            Component = loadable(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Home'))
+            break
+        default:
+      }
+  
+      this.state = {
+        Component
+      }
+    }
+  
+    render() {
+      const { Component: Comp } = this.state
+      const { pageName, ...rest } = this.props
+      return (
+        <Comp fallback={<div>loading</div>} {...rest} />
+      )
+    }
+  }
+
+export const Page = () =>  {
+  return(
+    <App>
         <Router history={history}>
             <Switch>
-                <Route path="/counter" exact component={(props) => <Counter {...props} />} />
-
-                <Route path="/login" exact component={(props) => <Login {...props} />} />
-
-                <Route path="/logout" exact component={(props) => <Logout {...props} />} />
-
-                <Route path="/profile" exact component={(props) => <Profile {...props} />} />
-
-                <Route path="/notfound" exact component={(props) => <Notfound {...props} />} />
-
-                <Route path="/" exact component={(props) => <Home {...props} />} />
+                <Route path="/counter" exact component={(props) => <LazyLoad pageName="Counter" {...props} />} />
+                <Route path="/login" exact component={(props) => <LazyLoad pageName="Login" {...props} />} />
+                <Route path="/logout" exact component={(props) => <LazyLoad pageName="Logout" {...props} />} />
+                <Route path="/profile" exact component={(props) => <LazyLoad pageName="Profile" {...props} />} />
+                <Route path="/notfound" exact component={(props) => <LazyLoad pageName="Notfound" {...props} />} />
+                <Route path="/" exact component={(props) => <LazyLoad pageName="Home" {...props} />} />
             </Switch>
-            {/* {renderRoutes(routes)} */}
         </Router>
-    </Provider>
-    , document.getElementById('root')
-);
+    </App>
+  )
+}
+setTimeout(() => {
+  loadableReady(() => {
+    ReactDOM.hydrate(
+      <Provider store={getClientStore()}>
+        <Page />
+      </Provider>
+      , document.getElementById('root')
+    );
+  })
+}, 2000)

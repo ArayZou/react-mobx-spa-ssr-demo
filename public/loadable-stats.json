@@ -1,0 +1,139 @@
+{
+  "hash": "c64a5abae96776581978",
+  "publicPath": "auto",
+  "outputPath": "/Users/rui.zou/test/react-mobx-spa-ssr-demo/public",
+  "assetsByChunkName": {
+    "main": [
+      "client.js"
+    ],
+    "ManageSpace": [
+      "ManageSpace.client.js"
+    ]
+  },
+  "assets": [
+    {
+      "type": "asset",
+      "name": "client.js",
+      "size": 1642281,
+      "emitted": false,
+      "comparedForEmit": false,
+      "cached": true,
+      "info": {
+        "javascriptModule": false
+      },
+      "chunkNames": [
+        "main"
+      ],
+      "chunkIdHints": [],
+      "auxiliaryChunkNames": [],
+      "auxiliaryChunkIdHints": [],
+      "chunks": [
+        "main"
+      ],
+      "auxiliaryChunks": []
+    },
+    {
+      "type": "asset",
+      "name": "vendors-node_modules_react-helmet_lib_Helmet_js-node_modules_react-router-dom_es_Redirect_js.client.js",
+      "size": 99756,
+      "emitted": false,
+      "comparedForEmit": false,
+      "cached": true,
+      "info": {
+        "javascriptModule": false
+      },
+      "chunkNames": [],
+      "chunkIdHints": [
+        "vendors"
+      ],
+      "auxiliaryChunkNames": [],
+      "auxiliaryChunkIdHints": [],
+      "chunks": [
+        "vendors-node_modules_react-helmet_lib_Helmet_js-node_modules_react-router-dom_es_Redirect_js"
+      ],
+      "auxiliaryChunks": []
+    },
+    {
+      "type": "asset",
+      "name": "ManageSpace.client.js",
+      "size": 29625,
+      "emitted": false,
+      "comparedForEmit": false,
+      "cached": true,
+      "info": {
+        "javascriptModule": false
+      },
+      "chunkNames": [
+        "ManageSpace"
+      ],
+      "chunkIdHints": [],
+      "auxiliaryChunkNames": [],
+      "auxiliaryChunkIdHints": [],
+      "chunks": [
+        "ManageSpace"
+      ],
+      "auxiliaryChunks": []
+    }
+  ],
+  "namedChunkGroups": {
+    "main": {
+      "name": "main",
+      "chunks": [
+        "main"
+      ],
+      "assets": [
+        {
+          "name": "client.js"
+        }
+      ],
+      "filteredAssets": 0,
+      "assetsSize": null,
+      "filteredAuxiliaryAssets": 0,
+      "auxiliaryAssetsSize": 0,
+      "children": {},
+      "childAssets": {}
+    },
+    "ManageSpace": {
+      "name": "ManageSpace",
+      "chunks": [
+        "vendors-node_modules_react-helmet_lib_Helmet_js-node_modules_react-router-dom_es_Redirect_js",
+        "ManageSpace"
+      ],
+      "assets": [
+        {
+          "name": "vendors-node_modules_react-helmet_lib_Helmet_js-node_modules_react-router-dom_es_Redirect_js.client.js"
+        },
+        {
+          "name": "ManageSpace.client.js"
+        }
+      ],
+      "filteredAssets": 0,
+      "assetsSize": null,
+      "filteredAuxiliaryAssets": 0,
+      "auxiliaryAssetsSize": 0,
+      "children": {},
+      "childAssets": {}
+    }
+  },
+  "generator": "loadable-components",
+  "chunks": [
+    {
+      "id": "main",
+      "files": [
+        "client.js"
+      ]
+    },
+    {
+      "id": "ManageSpace",
+      "files": [
+        "ManageSpace.client.js"
+      ]
+    },
+    {
+      "id": "vendors-node_modules_react-helmet_lib_Helmet_js-node_modules_react-router-dom_es_Redirect_js",
+      "files": [
+        "vendors-node_modules_react-helmet_lib_Helmet_js-node_modules_react-router-dom_es_Redirect_js.client.js"
+      ]
+    }
+  ]
+}

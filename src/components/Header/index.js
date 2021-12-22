@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
-import {Link} from 'react-router-dom';
 import { inject, observer } from 'mobx-react'
 import styles from './index.css';
+import history from '../../client/history'
 import withStyles from '../../withStyles';
 
 @inject('store')
@@ -10,22 +10,25 @@ class Header extends Component {
     constructor(props) {
         super(props)
     }
+    linkClick = (href) => {
+        history.push(href)
+    }
     render() {
         return (
             <nav className="navbar navbar-inverse navbar-fixed-top">
                 <div className="container-fluid">
                     <div className="navbar-header">
-                        <a className="navbar-brand">SSR</a>
+                        <a className="navbar-brand">{typeof window !== 'undefined' ? 'React-JS' : 'SSR'}</a>
                     </div>
                     <div>
                         <ul className="nav navbar-nav">
-                            <li><Link to="/">首页</Link></li>
+                            <li><a onClick={() => {this.linkClick('/')}}>首页</a></li>
                             {this.props.store.session.user && <Fragment>
-                                <li><Link to="/logout">退出</Link></li>
-                                <li><Link to="/profile">个人中心</Link></li>
-                                <li><Link to="/counter">counter</Link></li>
+                                <li><a onClick={() => {this.linkClick('/logout')}}>退出</a></li>
+                                <li><a onClick={() => {this.linkClick('/profile')}}>个人中心</a></li>
+                                <li><a onClick={() => {this.linkClick('/counter')}}>counter</a></li>
                             </Fragment>}
-                            {!this.props.store.session.user && <li><Link to="/login">登录</Link></li>}
+                            {!this.props.store.session.user && <li><a  onClick={() => {this.linkClick('/login')}}>登录</a></li>}
                         </ul>
                         {
                             this.props.store.session.user && (
@@ -40,8 +43,4 @@ class Header extends Component {
         )
     }
 }
-
-// Header = connect(
-//     state => state.session
-// )(Header);
 export default withStyles(Header, styles);
