@@ -1,8 +1,7 @@
-## React SSR 简易 demo
+## React + mobx + SPA + SSR demo
 
 ### 安装
-* 使用 `npm install ` 
-* 注意：使用 `cnpm install` 安装时不会读取 package.lock.json
+* 使用 `npm install `
 
 ### 启动
 * 找到 `api/server.js ` 文件并执行，开启后台服务(4000端口)
