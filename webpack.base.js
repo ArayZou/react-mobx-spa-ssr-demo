@@ -21,8 +21,5 @@ module.exports = {
                 }
             }
         ]
-    },
-    plugins: [
-        new LoadablePlugin()
-    ]
+    }
 }

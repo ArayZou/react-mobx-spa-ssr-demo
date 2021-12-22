@@ -1,12 +1,10 @@
 import React from 'react';
-import {StaticRouter, matchPath, Route} from 'react-router-dom';
 // 根据不同的路由，显示对应的网页标题和描述
 import {Helmet} from 'react-helmet';
 import {renderToString} from 'react-dom/server';
 import { Provider } from 'mobx-react'
-import { ChunkExtractor } from '@loadable/server'
 import {getServerStore} from '../store';
-import { Page } from '../client/index'
+import { ServerPage } from '../client/serverIndex'
 
 const helmet = Helmet.renderStatic();
 
@@ -19,35 +17,11 @@ export default function (req, res) {
     const list = [{id: 1, name: 'user1'}, {id: 2, name: 'user2'}]
     store.home.setHomeList(list)
 
-    // matchPath 是路由提供的工具方法，可以用来判断路径和路由对象是否匹配（不是简单的匹配：绝对相等）
-    // 这样的也能匹配到
-    // req.path   => /user/123456
-    // route.path => /user/:id
-    // matchRoutes 这个方法可以处理嵌套路由
-    // let matchedRoutes = matchRoutes(routes, req.path);
-
-    // let promises = [];
-    // 当前匹配到的路由如果需要异步请求数据，那么就在这里请求数据
-    // matchedRoutes.forEach(item => {
-    //     if (item.route.loadData) {
-    //         promises.push(new Promise(function (resolve) {
-    //             // 防止一个接口的失败，影响页面的渲染
-    //             // 不管调用接口是否失败，都让它成功
-    //             return item.route.loadData(store).then(resolve, resolve);
-    //         }));
-    //     }
-    // });
-    const statsFile = path.resolve('../dist/loadable-stats.json')
-    // We create an extractor from the statsFile
-    const extractor = new ChunkExtractor({ statsFile })
-    // Wrap your application using "collectChunks"
-    const jsx = extractor.collectChunks(
+    let html = renderToString(
         <Provider store={store}>
-            <Page />
+            <ServerPage />
         </Provider>
     )
-
-    let html = renderToString(jsx)
     // console.log(html)
 
     // 渲染完成之后，再获取 css 样式

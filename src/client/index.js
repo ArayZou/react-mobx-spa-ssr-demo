@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {lazy, Suspense} from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, Switch} from 'react-router-dom';
 import { Provider } from 'mobx-react'
-import loadable, { loadableReady } from '@loadable/component'
+import Home from '../containers/Home'
 import App from '../containers/App';
 import {getClientStore} from '../store';
 import history from './history'
@@ -14,26 +14,26 @@ class LazyLoad extends React.Component {
       let Component = null
       switch (props.pageName) {
         case 'Counter':
-          Component = loadable(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Counter'))
+          Component = lazy(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Counter'))
           break
         case 'Login':
-          Component = loadable(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Login'))
+          Component = lazy(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Login'))
           break
 
         case 'Logout':
-            Component = loadable(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Logout'))
+            Component = lazy(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Logout'))
             break
 
         case 'Profile':
-            Component = loadable(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Profile'))
+            Component = lazy(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Profile'))
             break
 
         case 'Notfound':
-            Component = loadable(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Notfound'))
+            Component = lazy(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Notfound'))
             break
 
         case 'Home':
-            Component = loadable(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Home'))
+            Component = lazy(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Home'))
             break
         default:
       }
@@ -47,11 +47,12 @@ class LazyLoad extends React.Component {
       const { Component: Comp } = this.state
       const { pageName, ...rest } = this.props
       return (
-        <Comp fallback={<div>loading</div>} {...rest} />
+        <Suspense fallback={<div>loading</div>}>
+          <Comp {...rest} />
+        </Suspense>
       )
     }
   }
-
 export const Page = () =>  {
   return(
     <App>
@@ -69,12 +70,10 @@ export const Page = () =>  {
   )
 }
 setTimeout(() => {
-  loadableReady(() => {
-    ReactDOM.hydrate(
-      <Provider store={getClientStore()}>
-        <Page />
-      </Provider>
-      , document.getElementById('root')
-    );
-  })
-}, 2000)
+  ReactDOM.render(
+    <Provider store={getClientStore()}>
+      <Page />
+    </Provider>
+    , document.getElementById('root')
+  );
+}, 1000)
