@@ -2,7 +2,6 @@ import React, {lazy, Suspense} from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, Switch} from 'react-router-dom';
 import { Provider } from 'mobx-react'
-import Home from '../containers/Home'
 import App from '../containers/App';
 import {getClientStore} from '../store';
 import history from './history'
@@ -14,26 +13,26 @@ class LazyLoad extends React.Component {
       let Component = null
       switch (props.pageName) {
         case 'Counter':
-          Component = lazy(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Counter'))
+          Component = lazy(() => import(/* webpackChunkName: "Counter" */ '../containers/Counter'))
           break
         case 'Login':
-          Component = lazy(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Login'))
+          Component = lazy(() => import(/* webpackChunkName: "Login" */ '../containers/Login'))
           break
 
         case 'Logout':
-            Component = lazy(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Logout'))
+            Component = lazy(() => import(/* webpackChunkName: "Logout" */ '../containers/Logout'))
             break
 
         case 'Profile':
-            Component = lazy(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Profile'))
+            Component = lazy(() => import(/* webpackChunkName: "Profile" */ '../containers/Profile'))
             break
 
         case 'Notfound':
-            Component = lazy(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Notfound'))
+            Component = lazy(() => import(/* webpackChunkName: "Notfound" */ '../containers/Notfound'))
             break
 
         case 'Home':
-            Component = lazy(() => import(/* webpackChunkName: "ManageSpace" */ '../containers/Home'))
+            Component = lazy(() => import(/* webpackChunkName: "Home" */ '../containers/Home'))
             break
         default:
       }
@@ -70,7 +69,7 @@ export const Page = () =>  {
   )
 }
 setTimeout(() => {
-  ReactDOM.render(
+  ReactDOM.hydrate(
     <Provider store={getClientStore()}>
       <Page />
     </Provider>
